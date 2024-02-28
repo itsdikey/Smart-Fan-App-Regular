@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="Smart_Fan_App_Regular.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:Smart_Fan_App_Regular"
+    xmlns:sfarViews="clr-namespace:SFAR.App.Views"
+    Shell.FlyoutBehavior="Disabled"
+    Title="Smart_Fan_App_Regular">
+
+    <ShellContent
+        Title="Devices"
+        ContentTemplate="{DataTemplate local:MainPage}"
+        Route="MainPage" />
+
+    <ShellContent
+      ContentTemplate="{DataTemplate sfarViews:DeviceControlPage}"
+      Route="DeviceControl" />
+
+</Shell>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels ="clr-namespace:SFAR.ViewModels;assembly=SFAR.ViewModels"
+             x:Class="SFAR.App.Views.DeviceControlPage"
+             x:DataType="viewModels:ControlDevicePageViewModel"
+             Title="DeviceControlPage">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Label Text="{Binding FanSpeed}"/>
+
+        <HorizontalStackLayout>
+            <Button Command="{Binding SpeedCommand}" CommandParameter="0" Text="0"></Button>
+            <Button Command="{Binding SpeedCommand}" CommandParameter="1" Text="1"></Button>
+            <Button Command="{Binding SpeedCommand}" CommandParameter="2" Text="2"></Button>
+            <Button Command="{Binding SpeedCommand}" CommandParameter="3" Text="3"></Button>
+        </HorizontalStackLayout>
+
+
+    </Grid>
+</ContentPage>
