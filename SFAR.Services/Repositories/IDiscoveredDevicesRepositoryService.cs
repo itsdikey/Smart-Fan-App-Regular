@@ -1,4 +1,5 @@
-﻿using SFAR.Models.Devices;
+﻿using InTheHand.Bluetooth;
+using SFAR.Models.Devices;
 using System.Collections.ObjectModel;
 
 namespace SFAR.Services.Repositories
@@ -7,9 +8,10 @@ namespace SFAR.Services.Repositories
     {
         ObservableCollection<SmartFanBLEDevice> Devices { get; }
 
-        void AddDevice(Plugin.BLE.Abstractions.Contracts.IDevice device);
+        void AddDevice(BluetoothDevice device);
         void ClearAll();
-        Plugin.BLE.Abstractions.Contracts.IDevice? GetDevice(SmartFanBLEDevice smartFanBleDevice);
-        SmartFanBLEDevice? GetSmartDevice(Plugin.BLE.Abstractions.Contracts.IDevice device);
+        BluetoothDevice? GetDevice(SmartFanBLEDevice smartFanBleDevice);
+        SmartFanBLEDevice? GetSmartDevice(BluetoothDevice device);
+        bool Has(BluetoothDevice device);
     }
 }

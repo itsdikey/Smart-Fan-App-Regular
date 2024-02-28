@@ -11,13 +11,13 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Label Text="{Binding FanSpeed}"/>
+        <Label Text="{Binding FanSpeed}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" FontSize="64"/>
 
-        <HorizontalStackLayout>
-            <Button Command="{Binding SpeedCommand}" CommandParameter="0" Text="0"></Button>
-            <Button Command="{Binding SpeedCommand}" CommandParameter="1" Text="1"></Button>
-            <Button Command="{Binding SpeedCommand}" CommandParameter="2" Text="2"></Button>
-            <Button Command="{Binding SpeedCommand}" CommandParameter="3" Text="3"></Button>
+        <HorizontalStackLayout Grid.Row="1" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+            <Button WidthRequest="80" Margin="5" HeightRequest="80" Command="{Binding SpeedCommand}" CommandParameter="0" Text="0"></Button>
+            <Button WidthRequest="80" Margin="5" HeightRequest="80" Command="{Binding SpeedCommand}" CommandParameter="1" Text="1"></Button>
+            <Button WidthRequest="80" Margin="5" HeightRequest="80" Command="{Binding SpeedCommand}" CommandParameter="2" Text="2"></Button>
+            <Button WidthRequest="80" Margin="5" HeightRequest="80" Command="{Binding SpeedCommand}" CommandParameter="3" Text="3"></Button>
         </HorizontalStackLayout>
 
 

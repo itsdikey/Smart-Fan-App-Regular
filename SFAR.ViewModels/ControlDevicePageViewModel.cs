@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
+using CommunityToolkit.Mvvm.Input;
 using SFAR.Services;
 using SFAR.Services.Repositories;
 using System.Windows.Input;
@@ -30,17 +31,29 @@ namespace SFAR.ViewModels
             _selectedDeviceRepositoryService = selectedDeviceRepositoryService;
             _deviceControlService = deviceControlService;
             _deviceControlService.FanSpeedChanged += DeviceControlService_FanSpeedChanged;
-            SpeedCommand = new Command<int>(async (x) =>
+            LifecycleEventManager.LifecycleEvent += LifecycleEventManager_LifecycleEvent;
+            SpeedCommand = new AsyncRelayCommand<string>(async (x) =>
             {
-                var result = await _deviceControlService.WriteSpeed(x);
+                var result = await _deviceControlService.WriteSpeed(int.Parse(x));
                 if (!result)
                 {
                     IToast toast = Toast.Make("Failed to update device speed", CommunityToolkit.Maui.Core.ToastDuration.Short, 14);
 
                     await toast.Show();
                 }
-            }, (_)=>true);
+            });
             Initialize();
+        }
+
+        private async void LifecycleEventManager_LifecycleEvent(string obj)
+        {
+            if (obj != "OnStart")
+            {
+                if (_selectedDeviceRepositoryService.SelectedDevice != null)
+                {
+                    await _deviceControlService.Disconnect(_selectedDeviceRepositoryService.SelectedDevice);
+                }
+            }
         }
 
         private void DeviceControlService_FanSpeedChanged(int speed)
