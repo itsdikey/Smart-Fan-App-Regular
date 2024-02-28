@@ -47,7 +47,7 @@ namespace SFAR.ViewModels
             _selectedDeviceRepositoryService = selectedDeviceRepositoryService;
             _deviceControlService = deviceControlService;
             //Devices = discoveredDevicesRepositoryService.Devices;
-            Initialize();
+            //Initialize();
 
             Command = new RelayCommand(() =>
             {
@@ -59,42 +59,42 @@ namespace SFAR.ViewModels
 
         private async void Initialize()
         {
-            //var device = await Bluetooth.RequestDeviceAsync(new RequestDeviceOptions { AcceptAllDevices = true });
+            var device = await Bluetooth.RequestDeviceAsync(new RequestDeviceOptions { AcceptAllDevices = true });
 
-            //_discoveredDevicesRepositoryService.AddDevice(device);
+            _discoveredDevicesRepositoryService.AddDevice(device);
 
-            //_selectedDeviceRepositoryService.SelectedDevice = _discoveredDevicesRepositoryService.GetSmartDevice(device);
+            _selectedDeviceRepositoryService.SelectedDevice = _discoveredDevicesRepositoryService.GetSmartDevice(device);
 
-            //await Shell.Current.GoToAsync("//DeviceControl");
+            await Shell.Current.GoToAsync("//DeviceControl");
 
-            if (_selectedDeviceRepositoryService.SelectedDevice != null)
-            {
-                await _deviceControlService.Disconnect(_selectedDeviceRepositoryService.SelectedDevice);
-            }
+            //if (_selectedDeviceRepositoryService.SelectedDevice != null)
+            //{
+            //    await _deviceControlService.Disconnect(_selectedDeviceRepositoryService.SelectedDevice);
+            //}
 
-            _selectedDeviceRepositoryService.SelectedDevice = null;
+            //_selectedDeviceRepositoryService.SelectedDevice = null;
 
-            _discoveredDevicesRepositoryService.ClearAll();
+            //_discoveredDevicesRepositoryService.ClearAll();
 
-            var hasPermissions = await _requiredPermissionService.HasAllPermissions();
+            //var hasPermissions = await _requiredPermissionService.HasAllPermissions();
 
-            if (!hasPermissions)
-            {
-                string text = "Missing Required Permissions";
-                ToastDuration duration = ToastDuration.Short;
-                double fontSize = 14;
+            //if (!hasPermissions)
+            //{
+            //    string text = "Missing Required Permissions";
+            //    ToastDuration duration = ToastDuration.Short;
+            //    double fontSize = 14;
 
-                var toast = Toast.Make(text, duration, fontSize);
+            //    var toast = Toast.Make(text, duration, fontSize);
 
-                await toast.Show(default);
+            //    await toast.Show(default);
 
-                return;
-            }
+            //    return;
+            //}
 
-            Devices = _discoveredDevicesRepositoryService.Devices;
+            //Devices = _discoveredDevicesRepositoryService.Devices;
 
 
-            await _deviceDiscoveryService.StartScanning();
+            //await _deviceDiscoveryService.StartScanning();
         }
 
         public void SelectionChanged(SmartFanBLEDevice? device)

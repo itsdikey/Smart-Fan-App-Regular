@@ -20,6 +20,10 @@
             <Button WidthRequest="80" Margin="5" HeightRequest="80" Command="{Binding SpeedCommand}" CommandParameter="3" Text="3"></Button>
         </HorizontalStackLayout>
 
+        <Grid Grid.RowSpan="2" IsVisible="{Binding IsLoading}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+            <Rectangle BackgroundColor="Black" Opacity="0.8"></Rectangle>
+            <ActivityIndicator IsRunning="True" Color="Blue" HeightRequest="80" WidthRequest="80" VerticalOptions="Center" HorizontalOptions="Center"/>
+        </Grid>
 
     </Grid>
 </ContentPage>

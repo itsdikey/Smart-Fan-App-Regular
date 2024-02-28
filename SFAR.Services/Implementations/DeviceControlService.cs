@@ -11,6 +11,7 @@ namespace SFAR.Services.Implementations
     internal sealed class DeviceControlService : IDeviceControlService
     {
         public event Action<int>? FanSpeedChanged;
+        public event Action<bool>? ReadyChanged;
 
         private readonly IDiscoveredDevicesRepositoryService _discoveredDevicesRepositoryService;
         private readonly IAdapter _adapter;
@@ -79,6 +80,12 @@ namespace SFAR.Services.Implementations
 
                 try
                 {
+
+                    if (!gatt.IsConnected)
+                    {
+                        OnReadyChanged(false);
+                    }
+
                     var service = await gatt.GetPrimaryServiceAsync(BluetoothUuid.FromGuid(Consts.SERVICE_UUID));
 
                     if (service == null)
@@ -93,6 +100,7 @@ namespace SFAR.Services.Implementations
                     var value = await characteristic.ReadValueAsync();
 
                     OnValueChange(value);
+                    OnReadyChanged(true);
 
                     result.SetResult(true);
                 }
@@ -112,6 +120,11 @@ namespace SFAR.Services.Implementations
         private void Characteristic_ValueUpdated(object? sender, GattCharacteristicValueChangedEventArgs e)
         {
             OnValueChange(e.Value);
+        }
+
+        private void OnReadyChanged(bool value)
+        {
+            ReadyChanged?.Invoke(value);
         }
 
         public void OnValueChange(byte[] value)

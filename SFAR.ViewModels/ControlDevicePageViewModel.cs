@@ -13,6 +13,7 @@ namespace SFAR.ViewModels
         private readonly IDeviceControlService _deviceControlService;
         private int _fanSpeed;
         private ICommand? _speedCommand;
+        private bool _isLoading;
 
         public int FanSpeed
         {
@@ -24,6 +25,18 @@ namespace SFAR.ViewModels
         {
             get => _speedCommand!; 
             set => SetProperty(ref _speedCommand, value);
+        }
+
+        public bool IsLoading
+        {
+            get
+            {
+                return _isLoading;
+            }
+            set
+            {
+                SetProperty(ref _isLoading, value);
+            }
         }
 
         public ControlDevicePageViewModel(ISelectedDeviceRepositoryService selectedDeviceRepositoryService, IDeviceControlService deviceControlService)
@@ -63,11 +76,22 @@ namespace SFAR.ViewModels
 
         private async void Initialize()
         {
+            IsLoading = true;
+
             if (_selectedDeviceRepositoryService.SelectedDevice == null)
             {
                 return;
             }
-            await _deviceControlService.Connect(_selectedDeviceRepositoryService.SelectedDevice);
+            var result = await _deviceControlService.Connect(_selectedDeviceRepositoryService.SelectedDevice);
+
+            IsLoading = !result;
+
+            if (!result)
+            {
+                IToast toast = Toast.Make("Failed to connect to the device", CommunityToolkit.Maui.Core.ToastDuration.Short, 14);
+
+                await toast.Show();
+            }
         }
     }
 }
