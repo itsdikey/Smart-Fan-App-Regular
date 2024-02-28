@@ -1,5 +1,4 @@
 ﻿using InTheHand.Bluetooth;
-using Plugin.BLE.Abstractions.Contracts;
 using SFAR.Models;
 using SFAR.Models.Devices;
 using SFAR.Services.Repositories;
@@ -14,14 +13,12 @@ namespace SFAR.Services.Implementations
         public event Action<bool>? ReadyChanged;
 
         private readonly IDiscoveredDevicesRepositoryService _discoveredDevicesRepositoryService;
-        private readonly IAdapter _adapter;
 
         private GattCharacteristic? _currentCharacteristic;
 
-        public DeviceControlService(IDiscoveredDevicesRepositoryService discoveredDevicesRepositoryService, IAdapter adapter)
+        public DeviceControlService(IDiscoveredDevicesRepositoryService discoveredDevicesRepositoryService)
         {
             _discoveredDevicesRepositoryService = discoveredDevicesRepositoryService;
-            _adapter = adapter;
         }
 
         public Task<bool> Connect(SmartFanBLEDevice smartDevice)

@@ -1,26 +1,17 @@
 ﻿using InTheHand.Bluetooth;
-using Plugin.BLE.Abstractions;
-using Plugin.BLE.Abstractions.Contracts;
 using SFAR.Models;
 using SFAR.Services.Repositories;
-using System.Diagnostics;
 
 namespace SFAR.Services.Implementations
 {
     internal sealed class DeviceDiscoveryService : IDeviceDiscoveryService
     {
-        private readonly IBluetoothLE ble;
-        private readonly IAdapter adapter;
         private readonly IDiscoveredDevicesRepositoryService discoveredDevicesRepositoryService;
 
         private BluetoothLEScan? _currentScan;
-        public DeviceDiscoveryService(IBluetoothLE ble, IAdapter adapter, IDiscoveredDevicesRepositoryService discoveredDevicesRepositoryService)
+        public DeviceDiscoveryService(IDiscoveredDevicesRepositoryService discoveredDevicesRepositoryService)
         {
-            this.ble = ble;
-            this.adapter = adapter;
             this.discoveredDevicesRepositoryService = discoveredDevicesRepositoryService;
-
-            //this.adapter.DeviceDiscovered += Adapter_DeviceDiscovered;
 
             Bluetooth.AdvertisementReceived += Bluetooth_AdvertisementReceived;
         }
@@ -47,13 +38,15 @@ namespace SFAR.Services.Implementations
             _currentScan = await Bluetooth.RequestLEScanAsync();
         }
 
-        public async Task StopScanning()
+        public Task StopScanning()
         {
             if (_currentScan != null)
             {
                 _currentScan.Stop();
                 _currentScan = null;
             }
+
+            return Task.CompletedTask;
         }
     }
 }

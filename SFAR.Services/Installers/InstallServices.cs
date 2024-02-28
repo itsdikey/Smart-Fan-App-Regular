@@ -1,15 +1,9 @@
-﻿using Plugin.BLE;
-using Plugin.BLE.Abstractions.Contracts;
-
-namespace SFAR.Services.Installers
+﻿namespace SFAR.Services.Installers
 {
     public static class InstallServices
     {
         public static void InstallSFARServices(this IServiceCollection services)
         {
-            services.AddSingleton<IBluetoothLE>(CrossBluetoothLE.Current);
-            services.AddSingleton<IAdapter>(CrossBluetoothLE.Current.Adapter);
-
             var assembly = typeof(InstallServices).Assembly;
 
             var iServiceType = typeof(IService);

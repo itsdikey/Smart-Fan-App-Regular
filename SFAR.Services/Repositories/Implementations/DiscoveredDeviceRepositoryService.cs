@@ -1,5 +1,4 @@
 ﻿using InTheHand.Bluetooth;
-using Plugin.BLE.Abstractions.Contracts;
 using SFAR.Models.Devices;
 using System.Collections.ObjectModel;
 

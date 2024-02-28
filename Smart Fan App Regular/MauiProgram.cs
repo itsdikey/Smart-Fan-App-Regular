@@ -3,7 +3,6 @@ using SFAR.ViewModels.Installers;
 using SFAR.Services.Installers;
 using SFAR.Installers;
 using CommunityToolkit.Maui;
-using Shiny;
 using Microsoft.Maui.LifecycleEvents;
 using SFAR.Services;
 
@@ -17,7 +16,6 @@ namespace Smart_Fan_App_Regular
             builder
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
-                .UseShiny()
                  .ConfigureLifecycleEvents(events =>
                  {
 #if ANDROID
@@ -27,8 +25,8 @@ namespace Smart_Fan_App_Regular
                         .OnCreate((activity, bundle) => LogEvent(nameof(AndroidLifecycle.OnCreate)))
                         .OnBackPressed((activity) => LogEvent(nameof(AndroidLifecycle.OnBackPressed)))
                         .OnStop((activity) => LogEvent(nameof(AndroidLifecycle.OnStop))));
-#endif
-                     static bool LogEvent(string eventName, string type = null)
+
+                     static bool LogEvent(string eventName, string? type = null)
                      {
                          LifecycleEventManager.OnLifeCycleEvent(eventName);
                          //if (eventName == "OnStart")
@@ -38,14 +36,14 @@ namespace Smart_Fan_App_Regular
                          System.Diagnostics.Debug.WriteLine($"Lifecycle event: {eventName}{(type == null ? string.Empty : $" ({type})")}");
                          return true;
                      }
+#endif
+
                  })
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
-
-            builder.Services.AddBluetoothLE();
 
             builder.Services.InstallSFARServices();
             builder.Services.InstallSFARViewModels();
