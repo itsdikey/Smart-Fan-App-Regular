@@ -146,6 +146,7 @@ namespace SFAR.Services.Implementations
             if (device == null)
                 return Task.CompletedTask;
 
+
             device.Gatt.Disconnect();
 
             return Task.CompletedTask;

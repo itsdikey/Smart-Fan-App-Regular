@@ -6,7 +6,7 @@
              x:Class="Smart_Fan_App_Regular.MainPage"
              x:DataType="viewModels:DiscoverPageViewModel">
 
-    <!--<ListView ItemsSource="{Binding Devices}" ItemSelected="ListView_ItemSelected">
+    <ListView ItemsSource="{Binding Devices}" ItemSelected="ListView_ItemSelected">
         <ListView.ItemTemplate>
             <DataTemplate 
                 x:DataType="models:SmartFanBLEDevice">
@@ -24,12 +24,12 @@
             </DataTemplate>
         </ListView.ItemTemplate>
        
-    </ListView>-->
+    </ListView>
 
-    <Grid>
+    <!--<Grid>
         <VerticalStackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
             <Button Text="Discover" Command="{Binding Command}"></Button>
         </VerticalStackLayout>
-    </Grid>
+    </Grid>-->
 
 </ContentPage>

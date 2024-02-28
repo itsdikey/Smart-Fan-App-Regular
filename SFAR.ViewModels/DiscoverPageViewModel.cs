@@ -47,6 +47,7 @@ namespace SFAR.ViewModels
             _selectedDeviceRepositoryService = selectedDeviceRepositoryService;
             _deviceControlService = deviceControlService;
             //Devices = discoveredDevicesRepositoryService.Devices;
+            Initialize();
 
             Command = new RelayCommand(() =>
             {
@@ -58,55 +59,42 @@ namespace SFAR.ViewModels
 
         private async void Initialize()
         {
-            var device = await Bluetooth.RequestDeviceAsync(new RequestDeviceOptions { AcceptAllDevices = true });
+            //var device = await Bluetooth.RequestDeviceAsync(new RequestDeviceOptions { AcceptAllDevices = true });
 
-            _discoveredDevicesRepositoryService.AddDevice(device);
+            //_discoveredDevicesRepositoryService.AddDevice(device);
 
-            _selectedDeviceRepositoryService.SelectedDevice = _discoveredDevicesRepositoryService.GetSmartDevice(device);
+            //_selectedDeviceRepositoryService.SelectedDevice = _discoveredDevicesRepositoryService.GetSmartDevice(device);
 
-            await Shell.Current.GoToAsync("//DeviceControl");
+            //await Shell.Current.GoToAsync("//DeviceControl");
 
-            //var gatt = device.Gatt;
-            //Debug.WriteLine("Connecting to GATT Server...");
-            //await gatt.ConnectAsync();
+            if (_selectedDeviceRepositoryService.SelectedDevice != null)
+            {
+                await _deviceControlService.Disconnect(_selectedDeviceRepositoryService.SelectedDevice);
+            }
 
-            //Debug.WriteLine("Getting Battery Service");
-            //var service = await gatt.GetPrimaryServiceAsync(Consts.SERVICE_UUID);
+            _selectedDeviceRepositoryService.SelectedDevice = null;
 
-            //Debug.WriteLine("Getting Battery Level Characteristic...");
-            //var characteristic = await service.GetCharacteristicAsync(Consts.FAN_SPEED_CHARACTERISTICS_UUID);
+            _discoveredDevicesRepositoryService.ClearAll();
 
+            var hasPermissions = await _requiredPermissionService.HasAllPermissions();
 
-            //Debug.WriteLine("Reading Battery Level...");
-            //var value = await characteristic.ReadValueAsync();
+            if (!hasPermissions)
+            {
+                string text = "Missing Required Permissions";
+                ToastDuration duration = ToastDuration.Short;
+                double fontSize = 14;
 
-            //Debug.WriteLine($"Battery Level is {Encoding.UTF8.GetString(value)} %");
-            //if (_selectedDeviceRepositoryService.SelectedDevice != null)
-            //{
-            //    await _deviceControlService.Disconnect(_selectedDeviceRepositoryService.SelectedDevice);
-            //}
+                var toast = Toast.Make(text, duration, fontSize);
 
-            //_selectedDeviceRepositoryService.SelectedDevice = null;
+                await toast.Show(default);
 
-            //_discoveredDevicesRepositoryService.ClearAll();
+                return;
+            }
 
-            //var hasPermissions = await _requiredPermissionService.HasAllPermissions();
-
-            //if (!hasPermissions)
-            //{
-            //    string text = "Missing Required Permissions";
-            //    ToastDuration duration = ToastDuration.Short;
-            //    double fontSize = 14;
-
-            //    var toast = Toast.Make(text, duration, fontSize);
-
-            //    await toast.Show(default);
-
-            //    return;
-            //}
+            Devices = _discoveredDevicesRepositoryService.Devices;
 
 
-            //await _deviceDiscoveryService.StartScanning();
+            await _deviceDiscoveryService.StartScanning();
         }
 
         public void SelectionChanged(SmartFanBLEDevice? device)
@@ -120,6 +108,8 @@ namespace SFAR.ViewModels
             {
 
                 await _deviceDiscoveryService.StopScanning();
+
+                await Task.Delay(500);
 
                 _selectedDeviceRepositoryService.SelectedDevice = device;
 

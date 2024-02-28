@@ -37,10 +37,6 @@ namespace SFAR.Services.Implementations
             }
         }
 
-        //private void Adapter_DeviceDiscovered(object? sender, Plugin.BLE.Abstractions.EventArgs.DeviceEventArgs e)
-        //{
-        //    discoveredDevicesRepositoryService.AddDevice(e.Device);
-        //}
         public async Task StartScanning()
         {
 
@@ -48,9 +44,7 @@ namespace SFAR.Services.Implementations
             var scanFilter = new BluetoothLEScanFilter();
             scanFilter.Services.Add(BluetoothUuid.FromGuid(Consts.SERVICE_UUID));
             bluetoothLEScanOptions.Filters.Add(scanFilter);
-            var requestScanDeviceOptions = new RequestDeviceOptions();
-            requestScanDeviceOptions.Filters.Add(scanFilter);
-            _currentScan = await Bluetooth.RequestLEScanAsync(bluetoothLEScanOptions);
+            _currentScan = await Bluetooth.RequestLEScanAsync();
         }
 
         public async Task StopScanning()

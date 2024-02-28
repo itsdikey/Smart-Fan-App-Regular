@@ -12,7 +12,7 @@ namespace SFAR.ViewModels
         private readonly ISelectedDeviceRepositoryService _selectedDeviceRepositoryService;
         private readonly IDeviceControlService _deviceControlService;
         private int _fanSpeed;
-        private ICommand _speedCommand;
+        private ICommand? _speedCommand;
 
         public int FanSpeed
         {
@@ -22,7 +22,7 @@ namespace SFAR.ViewModels
 
         public ICommand SpeedCommand
         {
-            get => _speedCommand; 
+            get => _speedCommand!; 
             set => SetProperty(ref _speedCommand, value);
         }
 
@@ -34,7 +34,7 @@ namespace SFAR.ViewModels
             LifecycleEventManager.LifecycleEvent += LifecycleEventManager_LifecycleEvent;
             SpeedCommand = new AsyncRelayCommand<string>(async (x) =>
             {
-                var result = await _deviceControlService.WriteSpeed(int.Parse(x));
+                var result = await _deviceControlService.WriteSpeed(int.Parse(x??"0"));
                 if (!result)
                 {
                     IToast toast = Toast.Make("Failed to update device speed", CommunityToolkit.Maui.Core.ToastDuration.Short, 14);
